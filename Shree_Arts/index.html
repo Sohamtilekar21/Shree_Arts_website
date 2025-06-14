@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Shree Arts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <style>
+    .hero {
+      text-align: center;
+      background: url('./_Assets/Print_Colors.jpg') no-repeat center/cover;
+      color: white;
+      padding: 4rem 1rem;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
+    .hero > * {
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 span {
+      font-size: 5rem;
+      color: #ffc107;
+    }
+    .contact-button {
+      background: #ffc107;
+      color: #000;
+      padding: 0.75rem 1.5rem;
+      border-radius: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      margin: 1rem 0;
+      display: inline-block;
+    }
+    .contact-button:hover{
+        transform: scale(1.02);
+    
+      }
+       .carousel {
+      position: relative;
+      max-width: 100%;
+      margin: 2rem auto;
+      padding: 0 3rem;            /* room for arrows */
+    }
+    .carousel-window {
+      overflow: hidden;
+    }
+    .carousel-inner {
+      display: flex;              /* slides sit side-by-side */
+      transition: transform .5s ease-in-out;
+      will-change: transform;
+    }
+    .slide {
+      flex: 0 0 100%;             /* each slide takes 100% width */
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem 0;
+    }
+
+    /* ---------- Service card ---------- */
+    .service-item {
+      background: #f5f5f5;
+      border-radius: 10px;
+      width: 250px;
+      padding: 1rem;
+      text-align: center;
+      transition: transform .3s ease, box-shadow .3s ease;
+      cursor: pointer;
+    }
+    .service-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 20px rgba(0,0,0,.1);
+    }
+    .service-item img {
+      width: 230px;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .services, .clients, .contact-form {
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .services h2, .clients h2 {
+      margin-bottom: 1.5rem;
+    }
+    /* ---------- Arrows ---------- */
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #fff;
+      border: none;
+      font-size: 2rem;
+      padding: .25rem .75rem;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.15);
+      transition: background .2s;
+    }
+    .arrow:hover { background: #f0f0f0; }
+    .arrow.left  { left: 0;  }
+    .arrow.right { right: 0; }
+
+    .client-carousel-wrapper {
+      overflow: hidden;
+      position: relative;
+    }
+    .client-carousel {
+      display: flex;
+      width: max-content;
+      animation: scroll 30s linear infinite;
+    }
+    .client-carousel img {
+      height: 60px;
+      margin: 0 2rem;
+      flex: 0 0 auto;
+    }
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    form input, form textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    form button {
+      background: #003366;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 45%;
+    }
+
+    .chat-widget {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.chat-button {
+  background: #25d366;
+  border-radius: 50%;
+  padding: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.chat-button img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.chat-popup {
+  display: none;
+  margin-top: 10px;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 40px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  min-width: 180px;
+}
+
+.chat-popup .chat-action {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.chat-popup .close-chat {
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 10px;
+  
+}
+
+
+    @media (max-width: 768px) {
+      .service-list {
+        flex-direction: column;
+        align-items: center;
+      }
+      .client-carousel {
+        animation-duration: 55s;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="top">
+      <a href="index.html" class="logo"><img src="./_Assets/sHREE ARTS.png" alt=""></a>
+    <nav>
+      <a href="#">Home</a>
+      <a href="about_us.html">About Us</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Willing to Grow your Business<br><span>10x</span><br>Within a Year?</h1>
+    <p>If Yes Please Contact Us for Further Details</p>
+    <a href="#contact" class="contact-button">Contact Now</a>
+    <p>We Print Beyond Your Expectations</p>
+    <br>
+    <p>When you choose our printing services, you can expect nothing less than excellence. <br>
+We take pride in our craftsmanship and strive to deliver prints of the highest quality.</p>
+  </section>
+  <section class="services">
+    <h2 style="text-align:center; margin-top:1rem;">Our Services</h2>
+
+    <div class="carousel">
+
+      <!-- arrows -->
+      <button class="arrow left"  aria-label="Previous">&#10094;</button>
+      <button class="arrow right" aria-label="Next">&#10095;</button>
+
+      <!-- window / track -->
+      <div class="carousel-window">
+        <div class="carousel-inner">
+
+          <!-- ======= Slide 1: first 6 items ======= -->
+          <div class="slide">
+            <div class="service-item">
+              <img src="./assets/Visiting_Card.jpg" alt="Visiting Cards">
+              <p>Visiting Cards</p>
+            </div>
+            <div class="service-item">
+              <img src="./assets/OPD_File.jpg" alt="Hospital Files">
+              <p>Hospital Files</p>
+            </div>
+            <div class="service-item">
+              <img src="./assets/Letterhead.jpg" alt="Letterheads">
+              <p>Letterheads</p>
+            </div>
+            <div class="service-item">
+              <img src="./assets/Form.jpg" alt="Medical Forms">
+              <p>Medical Forms</p>
+            </div>
+            <div class="service-item">
+              <img src="./assets/Standee.jpg" alt="Marketing Standee Display">
+              <p>Standee</p>
+            </div>
+          </div>
+
+          <!-- ======= Slide 2: next 6 items ======= -->
+          <div class="slide">
+            <div class="service-item">
+              <img src="./assets/Real Estate Brochure.jpg" alt="Company Brochures">
+              <p>Brochures</p>
+            </div>
+            <div class="service-item">
+              <img src="./assets/ID Card.jpg" alt="ID Cards">
+              <p>ID Cards</p>
+            </div>
+            <div class="service-item">
+              <img src="./assets/Album.jpg" alt="Albums">
+              <p>Albums</p>
+            </div>
+           <div class="service-item">
+              <img src="./assets/Employee Kit.jpg" alt="Employee Welcome Kit">
+              <p>Employee Kit</p>
+            </div>
+            <div class="service-item">
+              <img src="./assets/Stationary.jpg" alt="Custom Stationary">
+              <p>Stationary</p>
+            </div>
+          </div>
+
+        </div><!-- /.carousel-inner -->
+      </div><!-- /.carousel-window -->
+    </div><!-- /.carousel -->
+  </section>
+
+<hr>
+  <section class="clients">
+    <h2>Our Clients</h2>
+    <div class="client-carousel-wrapper">
+      <div class="client-carousel">
+        <img src="./_Assets/Jehangir.png" alt="Client Logo">
+        <img src="./_Assets/Enhancor.png" alt="Client Logo">
+        <img src="./_Assets/SNDT.png" alt="Client Logo">
+        <img src="./_Assets/BOI.png" alt="Client Logo">
+        <img src="./_Assets/Orchid.png" alt="Client Logo">
+        <img src="./_Assets/Iconic.png" alt="Client Logo">
+        <img src="./_Assets/Pristine.png" alt="Client Logo">
+        <img src="./_Assets/Sancheti.png" alt="Client Logo">
+        <img src="./_Assets/Zenwealth.png" alt="Client Logo">
+        <img src="./_Assets/Vigoursoft.png" alt="Client Logo">
+
+        <img src="./_Assets/Jehangir.png" alt="Client Logo">
+        <img src="./_Assets/Enhancor.png" alt="Client Logo">
+        <img src="./_Assets/SNDT.png" alt="Client Logo">
+        <img src="./_Assets/BOI.png" alt="Client Logo">
+        <img src="./_Assets/Orchid.png" alt="Client Logo">
+        <img src="./_Assets/Iconic.png" alt="Client Logo">
+        <img src="./_Assets/Pristine.png" alt="Client Logo">
+        <img src="./_Assets/Sancheti.png" alt="Client Logo">
+        <img src="./_Assets/Zenwealth.png" alt="Client Logo">
+        <img src="./_Assets/Vigoursoft.png" alt="Client Logo">
+      </div>
+    </div>
+  </section>
+<hr>
+<!-- service id service_xvohpcn -->
+ <!-- template ID template_3xrzt5d -->
+  <!-- punlic key  qmYKSf687Rz9n36ge -->
+  <section class="contact-form" id="contact">
+    <h2>Contact Us</h2>
+    <form onsubmit="sendEmail(event)">
+      <input type="text" name="name" placeholder="Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="tel" name="mobile" placeholder="Mobile No." required />
+      <textarea name="requirement" placeholder="Requirement" required></textarea>
+      <button type="submit">SUBMIT</button>
+    </form>
+  </section>
+
+  <!-- WhatsApp Chat Widget -->
+<div class="chat-widget">
+  <div class="chat-button" id="openChat">
+    <img src="https://img.icons8.com/color/48/whatsapp--v1.png" alt="Chat Icon" />
+     <!-- <i class='bx  bxl-whatsapp'  ></i> -->
+  </div>
+
+    <div class="chat-popup" id="chatPopup">
+      <button class="close-chat" id="closeChat">×</button>
+      <a
+        href="https://wa.me/919762968844?text=Hello%20Shree%20Arts%2C%20I%20would%20like%20to%20know%20more%20about%20your%20printing%20services."
+        target="_blank"
+        class="chat-action"
+      ><p>Click here to Chat With Us</p></a>
+    </div>
+  </div>
+
+
+  <footer>
+    <p>SHREE ARTS DESIGNING & PRINTING <br>
+    <a href="https://www.instagram.com/shree.arts_pune?igsh=ZHAwaTZoNW5qNDBu"><i class='bx bxl-instagram-alt' ></i></a>
+    <a href="https://www.linkedin.com/company/shree-arts25/"><i class='bx bxl-linkedin'></i></a>
+    <a href="https://www.facebook.com/share/1Y6FWDqd4B/?mibextid=wwXIfr"><i class='bx bxl-facebook-square'></i></a>
+    <a href="https://wa.link/g0drm2"><i class='bx  bxl-whatsapp'  ></i></a></p>
+    <p>Office No. 101, Manohar Apartment, Opp. PNG Showroom, Nisarg Hotel Lane, Erandawane, Pune 411 004</p>
+    <p>Call: +91 9762968844 | +91 8830728935 | Email: shreearts25@gmail.com</p>
+  </footer>
+
+
+
+    <script>
+    const inner   = document.querySelector('.carousel-inner');
+    const slides  = document.querySelectorAll('.slide');
+    const prevBtn = document.querySelector('.arrow.left');
+    const nextBtn = document.querySelector('.arrow.right');
+
+    let index = 0;
+    const maxIndex = slides.length - 1;
+
+    function update() {
+      inner.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      index = (index === 0) ? maxIndex : index - 1;
+      update();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      index = (index === maxIndex) ? 0 : index + 1;
+      update();
+    });
+
+    /* OPTIONAL: enable swipe on touch devices */
+    let startX = 0;
+    inner.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    inner.addEventListener('touchend', e => {
+      const diff = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diff) > 50) {
+        diff > 0 ? prevBtn.click() : nextBtn.click();
+      }
+    });
+
+     (function() {
+      emailjs.init("qmYKSf687Rz9n36ge"); // Replace with your actual public key
+    })();
+
+    function sendEmail(e) {
+      e.preventDefault();
+
+      emailjs.sendForm("service_xvohpcn", "template_3xrzt5d",e.target)
+        .then(function(response) {
+          alert("Form submitted successfully!");
+          console.log("SUCCESS!", response.status, response.text);
+          e.target.reset();
+        }, function(error) {
+          alert("Failed to send form. Please try again.");
+          console.log("FAILED...", error);
+        });
+    }
+
+    const openChat = document.getElementById('openChat');
+    const chatPopup = document.getElementById('chatPopup');
+    const closeChat = document.getElementById('closeChat');
+
+    openChat.addEventListener('click', () => {
+      chatPopup.style.display = 'flex';
+      openChat.style.display = 'none';
+    });
+
+    closeChat.addEventListener('click', () => {
+      chatPopup.style.display = 'none';
+      openChat.style.display = 'flex';
+    });
+
+  </script>
+</body>
+</html>
